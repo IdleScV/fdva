@@ -91,8 +91,8 @@ export const Home = () => {
                 }}
                 height={{ base: "110vh", small: "auto", large: "110vh" }}
                 backgroundSize="cover"
-                // border="solid red 2px"
                 backgroundImage={Bokeh}
+                backgroundPosition="center"
             >
                 <VStack
                     justify={{ base: "center" }}

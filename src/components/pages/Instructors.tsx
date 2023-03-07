@@ -37,11 +37,18 @@ const Instructor = () => {
                 margin="auto"
             >
                 <VStack align="left" spacing={8}>
-                    <Heading>Our Instructors</Heading>
+                    <Heading size={"2xl"}>Our Instructors</Heading>
                     <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4}>
                         <Image alt="Lauren Chen" src={LaurenImg} />
-                        <Box>
-                            <Heading size={"md"}>Nick Pasch</Heading>
+
+                        <Box
+                            textAlign={{ base: "center", lg: "left" }}
+                            boxShadow="lg"
+                            p={4}
+                            borderRadius="lg"
+                            backgroundColor="rgba(0,0,0,0.2)"
+                        >
+                            <Heading size={"xl"}>Nick Pasch</Heading>
                             <Text>
                                 Always an athlete, Nick’s love of dance
                                 initially came to be from his mother’s
@@ -59,9 +66,17 @@ const Instructor = () => {
                             </Text>
                         </Box>
 
-                        <Box>
-                            <Heading size={"md"}>Lauren Chen</Heading>
-                            <Text>
+                        <Box
+                            order={{ base: 1, lg: 0 }}
+                            textAlign={{ base: "center", lg: "right" }}
+                            boxShadow="lg"
+                            p={4}
+                            borderRadius="lg"
+                            backdropBrightness={0.5}
+                            backgroundColor="rgba(0,0,0,0.2)"
+                        >
+                            <Heading size={"xl"}>Lauren Chen</Heading>
+                            <Text textAlign={{ base: "center", lg: "left" }}>
                                 Lauren brings a wealth of experience and
                                 expertise to every lesson via her extensive
                                 dance background, including formal training in
