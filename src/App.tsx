@@ -1,38 +1,38 @@
-import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import { theme as proTheme } from "@chakra-ui/pro-theme";
+import { extendTheme } from "@chakra-ui/react";
+import Main from "./components/Main";
+import { BrowserRouter as Router } from "react-router-dom";
+export const theme = extendTheme(
+    {
+        fonts: {
+            heading: "noto-sans, sans-serif",
+            body: "noto-sans, sans-serif",
+            text: "noto-sans, sans-serif",
+        },
+        components: {
+            Text: {
+                baseStyle: {
+                    color: "white",
+                },
+            },
+            Heading: {
+                baseStyle: {
+                    color: "white",
+                },
+            },
+        },
+        initialColorMode: "dark",
+        useSystemColorMode: false,
+    },
+    proTheme
+);
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+    <Router>
+        <ColorModeScript />
+        <ChakraProvider theme={theme}>
+            <Main />
+        </ChakraProvider>
+    </Router>
+);
