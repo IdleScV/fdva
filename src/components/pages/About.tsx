@@ -1,17 +1,38 @@
-import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
-
+import { Box, Center, Heading, Text, VStack, Image } from "@chakra-ui/react";
+import LogoImg from "../../images/Logo.png";
 const About = () => {
     return (
         <Box
-            p={{
+            py={{
                 base: "1rem",
                 md: "2rem",
             }}
-            height="calc(100vh - 78px)"
+            px={{
+                base: "0.5rem",
+                md: "1rem",
+            }}
+            height={{ md: "calc(100vh - 78px)", base: "calc(100vh - 78px)" }}
             backgroundColor={"gray.500"}
             opacity={0.7}
+            position="relative"
         >
-            <Center height="100%">
+            <Box
+                position="absolute"
+                top="20%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                zIndex={-1}
+            >
+                <Image src={LogoImg} alt="Logo" />
+            </Box>
+            <Center
+                height="100%"
+                width={{
+                    base: "100%",
+                    md: "75%",
+                }}
+                margin="auto"
+            >
                 <VStack align="left" spacing={8}>
                     <Heading>About FDVA</Heading>
                     <Heading size={"md"}>Background</Heading>
