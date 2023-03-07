@@ -1,54 +1,106 @@
-import { Center, VStack, Heading, Box, Text } from "@chakra-ui/react";
-
+import {
+  VStack,
+  Heading,
+  Box,
+  Text,
+  Image,
+  SimpleGrid,
+} from "@chakra-ui/react";
+import BookAClassButton from "../BookAClassButton";
+import partnerDanceJpg from "../../images/partner-dance.jpg";
+import choreographyJpg from "../../images/choreography.jpg";
+import bokehJpg from "../../images/bokeh.jpg";
 const Lessons = () => {
-    return (
-        <Box
-            p={{
-                base: "1rem",
-                md: "2rem",
-            }}
-            height="calc(100vh - 78px)"
-            backgroundColor={"gray.500"}
-            opacity={0.7}
-        >
-            <Center height="100%">
-                <VStack align="left" spacing={8}>
-                    <Heading>Lesson Descriptions</Heading>
-                    <Heading size={"md"}>Background</Heading>
-                    <Text>
-                        First Dance Virginia (FDVA) was co-founded by dance
-                        professionals Nick Pasch and Lauren Chen as a solution
-                        to the lack of businesses specializing solely in first
-                        dance training in the DC area. Following both of their
-                        weddings, they recounted to each other that in the midst
-                        of all the stress of wedding planning, being able to
-                        relax and spend quality time with their partners while
-                        practicing for the first dance was a welcome relief.
-                        This is the philosophy that inspired FDVA. We come
-                        prepared with a myriad of tools including
-                        pre-choregraphed dances of varying levels, time
-                        commitments, and performance styles to give you and your
-                        partner the most relaxed experience possible while also
-                        helping you to be productive in your wedding planning.
-                    </Text>
-                    <Heading size={"md"}>Location</Heading>
-                    <Text>
-                        We currently teach out of a handful of locations around
-                        the greater Washington, DC area. To determine the most
-                        convenient location for you, please contact us with an
-                        inquiry. One of our instructors will also confirm the
-                        best location with you following the booking of your
-                        first lesson. We are also available to commute to our
-                        clients’ houses and teach you your first dance from the
-                        comfort of your own home. This is a great option for
-                        many couples who are struggling to find the time to
-                        check off all of their wedding-planning boxes. If you
-                        would like to receive lessons at your residence, please
-                        let us know upon booking your first lesson.
-                    </Text>
-                </VStack>
-            </Center>
-        </Box>
-    );
+  return (
+    <Box
+      height={{
+        base: "100%",
+        md: "calc(100vh - 78px)",
+      }}
+      backgroundImage={bokehJpg}
+      backgroundSize="cover"
+    >
+      <VStack
+        p={{
+          base: "1rem",
+          md: "2rem",
+        }}
+        height="100%"
+        // border="solid red 2px"
+        backgroundColor={"rgba(0, 0, 0, 0.2)"}
+        backdrop-filter="blur(10px)"
+      >
+        <Heading>Lesson Descriptions</Heading>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} margin="auto">
+          <VStack spacing={4}>
+            <Image
+              alt="ChoreographyJpg"
+              src={choreographyJpg}
+              width="100%"
+              maxHeight={{
+                base: "200px",
+                md: "400px",
+              }}
+              objectFit="cover"
+              objectPosition={{
+                base: "center",
+                md: "center",
+              }}
+            />
+            <Heading size={"md"}>Choreographed First Dance</Heading>
+            <Text>
+              Have as much or as little creative input as you desire. Lauren and
+              Nick will choreograph a full piece for you and your partner based
+              on a song of your choice or a general vibe of your liking. For a
+              choreographed dance we recommend at least 5 lessons to fully learn
+              movements and polish to a performance-ready state.{" "}
+            </Text>
+
+            <VStack>
+              <Text>5 Lesson Package</Text>
+              <Text>$450</Text>
+
+              <Text>A La Carte Lessons</Text>
+              <Text>$100 per lesson</Text>
+            </VStack>
+          </VStack>
+          <VStack spacing={4}>
+            <Image
+              alt="PartnerDanceJpg"
+              src={partnerDanceJpg}
+              width="100%"
+              maxHeight={{
+                base: "200px",
+                md: "400px",
+              }}
+              objectFit="cover"
+              objectPosition={{
+                base: "center",
+                md: "center",
+              }}
+            />
+
+            <Heading size={"md"}>Partner Dance 101</Heading>
+
+            <Text>
+              Elevate your freestyle dancing both for your first dance and the
+              rest of the night. Lauren and Nick will teach your the basics of
+              slow and fast partner dancing for the most common styles of music.
+              We recommend at least 3 lessons to comfortably learn how to dance
+              with each other on the spot.
+            </Text>
+            <VStack>
+              <Text>3 Lesson Package</Text>
+              <Text>$270</Text>
+
+              <Text>A La Carte Lessons</Text>
+              <Text>$100 per lesson</Text>
+            </VStack>
+          </VStack>
+        </SimpleGrid>
+        <BookAClassButton />
+      </VStack>
+    </Box>
+  );
 };
 export default Lessons;
