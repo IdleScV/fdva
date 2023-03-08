@@ -12,12 +12,15 @@ export const Logo = ({ inverse = false }: { inverse?: boolean }) => {
         objectFit={"contain"}
         width={"75px"}
         height={"75px"}
-        p={3}
+        p={{
+          base: 1,
+          md: 2,
+        }}
         src={LogoImg}
         objectPosition="center"
         alt="Logo"
         mr={-4}
-        // inverse color
+        mt={-2}
         filter={inverse ? "invert(1)" : "none"}
       />
       {!isSmallPhone && (

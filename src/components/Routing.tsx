@@ -15,9 +15,9 @@ function Routings() {
   const location = useLocation();
 
   const variants = {
-    initial: { opacity: 0, x: 1000 },
+    initial: { opacity: 0 },
     in: { opacity: 1, x: 0 },
-    out: { opacity: 0, x: -1000 },
+    out: { opacity: 0 },
   };
 
   const transition = {
@@ -32,7 +32,7 @@ function Routings() {
         {/* <AnimateSharedLayout> */}
         {/* <Breadcrumbs /> */}
         <Box height="64px">
-          <Header key={location.pathname} />
+          <Header />
         </Box>
       </AnimatePresence>
       <AnimatePresence exitBeforeEnter initial={false}>

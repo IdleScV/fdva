@@ -50,7 +50,7 @@ const Header = () => {
             exit={{ opacity: 0, x: -1000 }}
             backgroundColor={"gray.800"}
           >
-            <DrawerHeader py={2}>
+            <DrawerHeader p={0}>
               <NavLayout
                 onClickMenu={onClose}
                 isMenuOpen={isOpen}

@@ -13,7 +13,7 @@ const About = () => {
       }}
       height={{ md: "100%", base: "auto" }}
       backgroundColor={"gray.500"}
-      opacity={0.7}
+      opacity={1}
       position="relative"
     >
       <Box
@@ -21,9 +21,9 @@ const About = () => {
         top="20%"
         left="50%"
         transform="translate(-50%, -50%)"
-        zIndex={-1}
+        zIndex={0}
       >
-        <Image src={LogoImg} alt="Logo" />
+        <Image src={LogoImg} alt="Logo" opacity={0.5} />
       </Box>
       <Center
         height="100%"
@@ -32,6 +32,8 @@ const About = () => {
           md: "75%",
         }}
         margin="auto"
+        position={"relative"}
+        zIndex={1}
       >
         <VStack align="left" spacing={8}>
           <Heading>About FDVA</Heading>
