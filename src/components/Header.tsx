@@ -15,12 +15,13 @@ import BookAClassButton from "./BookAClassButton";
 import { data } from "./data";
 import { NavAccordion } from "./NavAccordion";
 import { NavLayout } from "./NavLayout";
+import { Routes } from "./Routes";
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const location = useLocation();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-
+  const isOnBooking = location.pathname === Routes.BOOKING;
   useEffect(() => {
     onClose();
   }, [location, onClose]);
@@ -28,7 +29,9 @@ const Header = () => {
   return (
     <Box as="nav" height="100%">
       <AnimatePresence exitBeforeEnter>
-        {!isOpen && <NavLayout onClickMenu={onOpen} isMenuOpen={isOpen} />}
+        {!isOpen && !isOnBooking && (
+          <NavLayout onClickMenu={onOpen} isMenuOpen={isOpen} />
+        )}
       </AnimatePresence>
 
       <Drawer
