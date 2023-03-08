@@ -5,7 +5,7 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+
 import { FaLinkedin, FaYoutube, FaInstagram } from "react-icons/fa";
 import { Logo } from "./Logo";
 
@@ -17,7 +17,7 @@ const Footer = () => {
       backgroundColor={"gray.800"}
       py={{ base: "12", md: "16" }}
     >
-      <Stack spacing={{ base: "4", md: "5" }} as={motion.div} layoutId="footer">
+      <Stack spacing={{ base: "4", md: "5" }}>
         <Stack justify="space-between" direction="row" align="center">
           <Logo inverse />
           <ButtonGroup variant="ghost">

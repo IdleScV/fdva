@@ -4,14 +4,14 @@ const About = () => {
   return (
     <Box
       py={{
-        base: "1rem",
+        base: "2rem",
         md: "2rem",
       }}
       px={{
         base: "0.5rem",
         md: "1rem",
       }}
-      height={{ md: "calc(100vh - 78px)", base: "calc(100vh - 78px)" }}
+      height={{ md: "100%", base: "auto" }}
       backgroundColor={"gray.500"}
       opacity={0.7}
       position="relative"

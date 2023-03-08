@@ -7,7 +7,8 @@ import {
   SimpleGrid,
   Image,
 } from "@chakra-ui/react";
-import LaurenImg from "../../images/rose.jpg";
+import NickImg from "../../images/nickheadshot.png";
+import LaurenImg from "../../images/lauren.jpeg";
 import bokehJpg from "../../images/bokeh.jpg";
 const Instructor = () => {
   return (
@@ -38,7 +39,16 @@ const Instructor = () => {
         <VStack align="left" spacing={8}>
           <Heading size={"2xl"}>Our Instructors</Heading>
           <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4}>
-            <Image alt="Lauren Chen" src={LaurenImg} />
+            <Image
+              alt="NickPasch"
+              height={{ base: "60vh", lg: "400px" }}
+              src={NickImg}
+              ml={"auto"}
+              mr={{
+                base: "auto",
+                lg: "0",
+              }}
+            />
 
             <Box
               textAlign={{ base: "center", lg: "left" }}
@@ -84,7 +94,15 @@ const Instructor = () => {
                 your first dance a truly unforgettable moment.
               </Text>
             </Box>
-            <Image alt="Lauren Chen" src={LaurenImg} flex={1} />
+            <Image
+              alt="Lauren Chen"
+              src={LaurenImg}
+              m={{
+                base: "auto",
+                lg: "0",
+              }}
+              height={{ base: "60vh", lg: "400px" }}
+            />
           </SimpleGrid>
         </VStack>
       </Center>

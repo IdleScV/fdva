@@ -31,7 +31,9 @@ function Routings() {
       <AnimatePresence exitBeforeEnter>
         {/* <AnimateSharedLayout> */}
         {/* <Breadcrumbs /> */}
-        <Header key={location.pathname} />
+        <Box height="64px">
+          <Header key={location.pathname} />
+        </Box>
       </AnimatePresence>
       <AnimatePresence exitBeforeEnter initial={false}>
         <Routes key={location.pathname} location={location}>

@@ -1,19 +1,19 @@
-import { Center, VStack, Heading, Box, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
-
+import { Heading, Box } from "@chakra-ui/react";
+import { useState } from "react";
+import { CustomImage, images, slides, thumbnails, videos } from "../Images";
+import { Gallery as GalleryComponent } from "react-grid-gallery";
+import Lightbox from "yet-another-react-lightbox";
+import Video from "yet-another-react-lightbox/plugins/video";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
 const Gallery = () => {
-  const GOOGLE_SHARED_ALBUM_URL = "https://photos.app.goo.gl/KfERQHhG9dH4eLjb6";
+  const [index, setIndex] = useState(-1);
+  const allImages = [...thumbnails, ...images];
+  const allSlides = [...videos, ...slides];
 
-  useEffect(() => {
-    async function getAlbum() {
-      const res = await fetch(GOOGLE_SHARED_ALBUM_URL, {
-        // no cors
-        mode: "no-cors",
-      });
-      console.log(res);
-    }
-    getAlbum();
-  }, []);
+  const handleClick = (index: number, item: CustomImage) => setIndex(index);
 
   return (
     <Box
@@ -21,44 +21,33 @@ const Gallery = () => {
         base: "1rem",
         md: "2rem",
       }}
-      height="calc(100vh - 78px)"
+      minH={"calc(100vh - 64px)"}
       backgroundColor={"gray.500"}
-      opacity={0.7}
+      display="flex"
+      flexDirection="column"
+      textAlign={{ base: "center", md: "left" }}
     >
-      <Center height="100%">
-        <VStack align="left" spacing={8}>
-          <Heading>Lesson Descriptions</Heading>
-          <Heading size={"md"}>Background</Heading>
-
-          <Text>
-            First Dance Virginia (FDVA) was co-founded by dance professionals
-            Nick Pasch and Lauren Chen as a solution to the lack of businesses
-            specializing solely in first dance training in the DC area.
-            Following both of their weddings, they recounted to each other that
-            in the midst of all the stress of wedding planning, being able to
-            relax and spend quality time with their partners while practicing
-            for the first dance was a welcome relief. This is the philosophy
-            that inspired FDVA. We come prepared with a myriad of tools
-            including pre-choregraphed dances of varying levels, time
-            commitments, and performance styles to give you and your partner the
-            most relaxed experience possible while also helping you to be
-            productive in your wedding planning.
-          </Text>
-          <Heading size={"md"}>Location</Heading>
-          <Text>
-            We currently teach out of a handful of locations around the greater
-            Washington, DC area. To determine the most convenient location for
-            you, please contact us with an inquiry. One of our instructors will
-            also confirm the best location with you following the booking of
-            your first lesson. We are also available to commute to our clients’
-            houses and teach you your first dance from the comfort of your own
-            home. This is a great option for many couples who are struggling to
-            find the time to check off all of their wedding-planning boxes. If
-            you would like to receive lessons at your residence, please let us
-            know upon booking your first lesson.
-          </Text>
-        </VStack>
-      </Center>
+      <Heading>Gallery</Heading>
+      <Box>
+        <GalleryComponent
+          images={allImages}
+          onClick={handleClick}
+          enableImageSelection={false}
+        />
+        <Lightbox
+          plugins={[Video, Fullscreen, Captions]}
+          slides={allSlides}
+          open={index >= 0}
+          index={index}
+          close={() => setIndex(-1)}
+          video={{
+            controls: true,
+            playsInline: true,
+            autoPlay: true,
+            loop: true,
+          }}
+        />
+      </Box>
     </Box>
   );
 };

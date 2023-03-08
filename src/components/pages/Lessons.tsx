@@ -28,7 +28,6 @@ const Lessons = () => {
         height="100%"
         // border="solid red 2px"
         backgroundColor={"rgba(0, 0, 0, 0.2)"}
-        backdrop-filter="blur(10px)"
       >
         <Heading>Lesson Descriptions</Heading>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} margin="auto">

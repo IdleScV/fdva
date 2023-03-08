@@ -5,6 +5,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -25,12 +26,10 @@ const Header = () => {
   }, [location, onClose]);
 
   return (
-    <Box as="nav" py={2}>
-      {!isOpen ? (
-        <NavLayout onClickMenu={onOpen} isMenuOpen={isOpen} />
-      ) : (
-        <Box height="64px"></Box>
-      )}
+    <Box as="nav" height="100%">
+      <AnimatePresence exitBeforeEnter>
+        {!isOpen && <NavLayout onClickMenu={onOpen} isMenuOpen={isOpen} />}
+      </AnimatePresence>
 
       <Drawer
         placement="bottom"
