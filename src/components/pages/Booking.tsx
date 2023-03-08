@@ -16,6 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState, useCallback, useEffect } from "react";
 import { FaBackward } from "react-icons/fa";
 import { MdArrowBackIos, MdArrowForwardIos, MdBackspace } from "react-icons/md";
+import { Logo } from "../Logo";
 
 type TimeSlot = {
   time: string;
@@ -30,6 +31,14 @@ const tempTimeSlots: TimeSlot[] = [
   {
     time: "9:00PM",
     id: "2",
+  },
+  {
+    time: "10:00PM",
+    id: "3",
+  },
+  {
+    time: "11:00PM",
+    id: "4",
   },
 ];
 
@@ -66,7 +75,8 @@ const Booking = () => {
 
   return (
     <Box
-      minHeight="calc(100vh - 64px)"
+      mt="-64px"
+      minHeight="100vh"
       p={{
         base: "1rem",
         md: "2rem",
@@ -74,7 +84,21 @@ const Booking = () => {
       display={"flex"}
       flexDirection={"column"}
     >
-      <Heading mb={4}>Booking</Heading>
+      <Flex
+        flexDir={{
+          base: "column",
+          md: "row-reverse",
+        }}
+        textAlign="center"
+        justifyContent="space-evenly"
+        alignItems={"center"}
+      >
+        <Logo />
+        <Heading mb={4} textAlign={"center"}>
+          Booking
+        </Heading>
+      </Flex>
+
       {/* <SimpleGrid columns={{ base: 1, md: 2 }}> */}
       <AnimatePresence initial={false} exitBeforeEnter>
         {currentStep === 0 && (
@@ -130,7 +154,12 @@ const Booking = () => {
                   flexGrow={1}
                   px={{
                     base: "0.5rem",
+                    md: "0rem",
+                  }}
+                  pl={{
+                    base: "0.5rem",
                     md: "1rem",
+                    s,
                   }}
                   textAlign={{
                     base: "center",
@@ -166,10 +195,13 @@ const Booking = () => {
                         md: "lg",
                       }}
                       layoutId="booking-time"
+                      whiteSpace={"nowrap"}
                     >
                       {date
                         ? date.toDateString() +
-                          (selectedSlot ? ` ${selectedSlot?.time}` : "")
+                          (selectedSlot
+                            ? ` ${selectedSlot?.time}`
+                            : " <Please select a time>")
                         : "Please select a dates"}
                     </Text>
                   </AnimatePresence>

@@ -27,7 +27,7 @@ const Header = () => {
   }, [location, onClose]);
 
   return (
-    <Box as="nav" height="100%">
+    <Box as="nav">
       <AnimatePresence exitBeforeEnter>
         {!isOpen && !isOnBooking && (
           <NavLayout onClickMenu={onOpen} isMenuOpen={isOpen} />
