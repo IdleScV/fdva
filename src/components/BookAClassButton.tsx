@@ -1,8 +1,13 @@
 import { Button } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+
+import { Routes } from "./Routes";
 
 const BookAClassButton = () => {
   return (
     <Button
+      as={Link}
+      to={Routes.BOOKING}
       m={"auto"}
       colorScheme="blue"
       variant="outline"

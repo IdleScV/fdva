@@ -13,10 +13,7 @@ import bokehJpg from "../../images/bokeh.jpg";
 const Lessons = () => {
   return (
     <Box
-      height={{
-        base: "100%",
-        md: "calc(100vh - 78px)",
-      }}
+      minHeight={"calc(100vh - 64px)"}
       backgroundImage={bokehJpg}
       backgroundSize="cover"
     >

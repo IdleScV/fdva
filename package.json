@@ -8,6 +8,7 @@
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
     "@fontsource/noto-sans": "^4.5.11",
+    "@natscale/react-calendar": "^0.0.0-beta.26",
     "@supabase/supabase-js": "^2.10.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",

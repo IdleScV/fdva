@@ -21,7 +21,7 @@ const Instructor = () => {
         base: "0.5rem",
         md: "1rem",
       }}
-      minHeight={"100vh"}
+      minHeight={"calc(100vh - 64px)"}
       backgroundImage={bokehJpg}
       backgroundPosition="center"
       backgroundSize="cover"

@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 export const Home = () => {
   const { scrollYProgress } = useScroll();
   useEffect(() => {
-    console.log(scrollYProgress);
+    // console.log(scrollYProgress);
   }, [scrollYProgress]);
 
   const cardVariants: Variants = {
@@ -50,7 +50,7 @@ export const Home = () => {
           base: "1rem",
           md: "2rem",
         }}
-        height="calc(100vh - 78px)"
+        height="calc(100vh - 64px)"
       >
         <VStack
           justify={{ base: "center", md: "end" }}

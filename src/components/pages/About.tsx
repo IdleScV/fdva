@@ -11,7 +11,7 @@ const About = () => {
         base: "0.5rem",
         md: "1rem",
       }}
-      height={{ md: "100%", base: "auto" }}
+      minHeight={"calc(100vh - 64px)"}
       backgroundColor={"gray.500"}
       opacity={1}
       position="relative"
