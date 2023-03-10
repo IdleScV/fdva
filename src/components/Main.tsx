@@ -25,7 +25,12 @@ function Main() {
           animate={{
             opacity: 1,
           }}
-          exit={{ opacity: 0, y: -400, transition: { duration: 1 } }}
+          exit={{
+            opacity: 0,
+            scale: 0.3,
+            y: -100,
+            transition: { duration: 1 },
+          }}
         >
           <Center width="100%">
             <Spinner size={"xl"} />

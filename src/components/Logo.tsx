@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import { Routes } from "./Routes";
 import LogoImg from "../images/Logo.png";
 
-export const Logo = ({ inverse = false }: { inverse?: boolean }) => {
+export const Logo = ({
+  inverse = false,
+  stayBig = false,
+}: {
+  inverse?: boolean;
+  stayBig?: boolean;
+}) => {
   const isSmallPhone = useBreakpointValue({ base: true, md: false });
   return (
     <HStack as={Link} mt={2} to={Routes.HOME} height={"75px"}>
@@ -23,7 +29,7 @@ export const Logo = ({ inverse = false }: { inverse?: boolean }) => {
         mt={-2}
         filter={inverse ? "invert(1)" : "none"}
       />
-      {!isSmallPhone && (
+      {(!isSmallPhone || stayBig) && (
         <Text
           fontSize="2xl"
           fontWeight={400}

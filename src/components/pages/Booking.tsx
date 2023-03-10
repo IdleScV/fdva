@@ -1,46 +1,25 @@
 import {
   Heading,
   Box,
-  Center,
-  Text,
-  HStack,
   Flex,
   Button,
   VStack,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
   SimpleGrid,
-  Spinner,
+  GridItem,
+  Grid,
 } from "@chakra-ui/react";
-import { Calendar } from "@natscale/react-calendar";
 import "@natscale/react-calendar/dist/main.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useCallback, useEffect } from "react";
-import { FaBackward } from "react-icons/fa";
-import { MdArrowBackIos, MdArrowForwardIos, MdBackspace } from "react-icons/md";
+import BackButton from "../BackButton";
 import { Logo } from "../Logo";
-
-type TimeSlot = {
-  time: string;
-  id: string;
-};
-
-const tempTimeSlots: TimeSlot[] = [
-  {
-    time: "8:00PM",
-    id: "1",
-  },
-  {
-    time: "9:00PM",
-    id: "2",
-  },
-  {
-    time: "10:00PM",
-    id: "3",
-  },
-  {
-    time: "11:00PM",
-    id: "4",
-  },
-];
+import { PhoneNumberInput } from "../PhoneNumberInput";
+import StepOne, { TimeSlot, tempTimeSlots } from "./Booking/StepOne";
+import { ClassOptionType, ClassOptions, StepTwo } from "./Booking/StepTwo";
 
 const Booking = () => {
   const [date, setDate] = useState<Date>();
@@ -49,6 +28,7 @@ const Booking = () => {
     TimeSlot[] | undefined
   >();
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | undefined>();
+  const [selectedClass, setSelectedClass] = useState<ClassOptionType>();
   const [currentStep, setCurrentStep] = useState(0);
   const onChange = useCallback(
     (val: any) => {
@@ -59,18 +39,106 @@ const Booking = () => {
   );
 
   useEffect(() => {
-    console.log("When date changes", date);
     setIsLoading(true);
     setSelectedSlot(undefined);
     setTimeout(() => {
       setSelectedDateSlots(tempTimeSlots);
-
       setIsLoading(false);
     }, 1000);
   }, [date]);
 
   const handleSlotSelect = (slot: TimeSlot) => {
     setSelectedSlot(slot);
+  };
+
+  const handleClassTypeSelect = (classType: ClassOptionType) => {
+    setSelectedClass(classType);
+  };
+
+  const handleBackStep = () => {
+    if (currentStep === 0) return;
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleForwardStep = () => {
+    if (currentStep === 2) return;
+    setCurrentStep(currentStep + 1);
+  };
+
+  const isDisabled = useCallback((date: Date) => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() - 1);
+    return date < tomorrow;
+  }, []);
+
+  const staggeredAnimation = (count: number) => {
+    return {
+      initial: {
+        opacity: 0,
+        x: 50,
+      },
+      animate: {
+        opacity: 1,
+        x: 0,
+        transition: {
+          delay: (1 - 1 / count) * 1.5,
+          ease: "easeOut",
+        },
+      },
+      exit: {
+        opacity: 0,
+        x: -50,
+        transition: {
+          delay: 0.2 * count,
+          duration: 0.5,
+        },
+      },
+    };
+  };
+
+  type FormDataType = {
+    name: string;
+    label: string;
+    type: string;
+  };
+
+  const ClassSpecificForm = (selectedClass: ClassOptionType) => {
+    switch (selectedClass.value) {
+      case ClassOptions.Choreographed:
+        return [] as FormDataType[];
+      case ClassOptions.Partner:
+        return [] as FormDataType[];
+      default:
+        return [] as FormDataType[];
+    }
+  };
+
+  const NonSpecificForm: FormDataType[] = [
+    {
+      name: "name",
+      label: "Name",
+      type: "text",
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+    },
+    {
+      name: "phone",
+      label: "Phone",
+      type: "tel",
+    },
+    {
+      name: "weddingDate",
+      label: "Wedding Date",
+      type: "date",
+    },
+  ];
+
+  const handlePhoneChange = (value: string) => {
+    console.log(value);
   };
 
   return (
@@ -84,225 +152,48 @@ const Booking = () => {
       display={"flex"}
       flexDirection={"column"}
     >
-      <Flex
-        flexDir={{
-          base: "column",
-          md: "row-reverse",
-        }}
-        textAlign="center"
-        justifyContent="space-evenly"
-        alignItems={"center"}
-      >
-        <Logo />
-        <Heading mb={4} textAlign={"center"}>
-          Booking
-        </Heading>
-      </Flex>
+      <NoNavHeader header="Booking" />
 
-      {/* <SimpleGrid columns={{ base: 1, md: 2 }}> */}
       <AnimatePresence initial={false} exitBeforeEnter>
         {currentStep === 0 && (
-          <Box
-            as={motion.div}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
+          <StepOne
+            date={date}
+            handleForwardStep={handleForwardStep}
+            handleSlotSelect={handleSlotSelect}
+            isDisabled={isDisabled}
+            isLoading={isLoading}
             key="step-0"
-          >
-            <VStack
-              flexGrow={1}
-              height={"auto"}
-              display="flex"
-              flexDir="column"
-            >
-              <Heading
-                width={{
-                  base: "100%",
-                  md: "75%",
-                }}
-                size={{
-                  base: "md",
-                  md: "lg",
-                }}
-                textAlign={{
-                  base: "center",
-                  md: "left",
-                }}
-              >
-                Step 1. Schedule your first lesson
-              </Heading>
-              <Flex
-                flexDir={{
-                  base: "column",
-                  md: "row",
-                }}
-                width={{
-                  base: "100%",
-                  md: "75%",
-                }}
-                alignItems="top"
-              >
-                <Box margin="auto">
-                  <Calendar
-                    weekends={[]}
-                    startOfWeek={0}
-                    value={date}
-                    onChange={onChange}
-                  />
-                </Box>
-                <Box
-                  flexGrow={1}
-                  px={{
-                    base: "0.5rem",
-                    md: "0rem",
-                  }}
-                  pl={{
-                    base: "0.5rem",
-                    md: "1rem",
-                    s,
-                  }}
-                  textAlign={{
-                    base: "center",
-                    md: "left",
-                  }}
-                >
-                  <Heading
-                    size={{
-                      base: "sm",
-                      md: "lg",
-                    }}
-                    whiteSpace={"nowrap"}
-                  >
-                    Selected Date
-                  </Heading>
-                  <AnimatePresence exitBeforeEnter>
-                    <Text
-                      as={motion.div}
-                      key={date?.toDateString()}
-                      initial={{ opacity: 0, x: 100 }}
-                      animate={{
-                        opacity: 1,
-                        x: 0,
-                        transition: {
-                          delay: 0.5,
-                        },
-                      }}
-                      exit={{
-                        opacity: 0,
-                      }}
-                      fontSize={{
-                        base: "sm",
-                        md: "lg",
-                      }}
-                      layoutId="booking-time"
-                      whiteSpace={"nowrap"}
-                    >
-                      {date
-                        ? date.toDateString() +
-                          (selectedSlot
-                            ? ` ${selectedSlot?.time}`
-                            : " <Please select a time>")
-                        : "Please select a dates"}
-                    </Text>
-                  </AnimatePresence>
-                  <AnimatePresence exitBeforeEnter>
-                    {date &&
-                      (isLoading ? (
-                        <Center
-                          py={8}
-                          width="100%"
-                          as={motion.div}
-                          exit={{ opacity: 0 }}
-                        >
-                          <Spinner />
-                        </Center>
-                      ) : (
-                        <SimpleGrid
-                          layoutId="grid"
-                          as={motion.div}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          key={date?.toDateString() + "slots"}
-                          mt={2}
-                          columns={{
-                            base: 2,
-                            md: 3,
-                          }}
-                          spacing={2}
-                          flexGrow={1}
-                        >
-                          {selectedDateSlots &&
-                            selectedDateSlots.map((slot) => (
-                              <Button
-                                isActive={
-                                  selectedSlot && selectedSlot.id === slot.id
-                                }
-                                onClick={() => handleSlotSelect(slot)}
-                              >
-                                {slot.time}
-                              </Button>
-                            ))}
-                        </SimpleGrid>
-                      ))}
-                  </AnimatePresence>
-                  <AnimatePresence>
-                    {selectedSlot && (
-                      <Box
-                        as={motion.div}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
-                        mt={8}
-                      >
-                        <Button
-                          width="50%"
-                          size="xl"
-                          onClick={() => setCurrentStep(1)}
-                          outline={"white solid"}
-                          variant="ghost"
-                          _hover={{
-                            backgroundColor: "rgba(0,0,0,0.1)",
-                          }}
-                          rightIcon={<MdArrowForwardIos />}
-                        >
-                          Next
-                        </Button>
-                      </Box>
-                    )}
-                  </AnimatePresence>
-                </Box>
-              </Flex>
-            </VStack>
-
-            {/* </SimpleGrid> */}
-          </Box>
+            onChange={onChange}
+            selectedDateSlots={selectedDateSlots}
+            selectedSlot={selectedSlot}
+          />
         )}
         {currentStep === 1 && (
+          <StepTwo
+            date={date}
+            handleBackStep={handleBackStep}
+            handleClassTypeSelect={handleClassTypeSelect}
+            handleForwardStep={handleForwardStep}
+            key="step-1"
+            selectedClass={selectedClass}
+            selectedSlot={selectedSlot}
+          />
+        )}
+        {currentStep === 2 && (
           <Box
             as={motion.div}
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
-            key="step-1"
+            key="step-3"
           >
-            <Button
-              variant="ghost"
-              _hover={{
-                backgroundColor: "rgba(0,0,0,0.1)",
-              }}
-              leftIcon={<MdArrowBackIos />}
-              onClick={() => {
-                setCurrentStep(0);
-              }}
-            >
-              Back
-            </Button>
+            <BackButton handleClick={handleBackStep} />
             <VStack
               flexGrow={1}
               height={"auto"}
               display="flex"
               flexDir="column"
+              border="solid red 2px"
             >
               <Heading
                 width={{
@@ -318,27 +209,98 @@ const Booking = () => {
                   md: "left",
                 }}
               >
-                Step 2. Choose your class type
+                Step 3. Customize
               </Heading>
-              <HStack>
-                <Text
+              <AnimatePresence>
+                <Grid
+                  border="solid red 2px"
                   as={motion.div}
-                  key={date?.toDateString()}
-                  initial={{ opacity: 0, x: -1000 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 1000 }}
-                  fontSize={{
-                    base: "sm",
-                    md: "lg",
+                  gap={4}
+                  templateRows={{
+                    base: "repeat( 1fr)",
+                    md: "repeat( 1fr)",
                   }}
-                  layoutId="booking-time"
+                  templateColumns={{
+                    base: "repeat(1, 1fr)",
+                    md: "repeat(4, 1fr)",
+                  }}
+                  bg="bg-surface"
+                  boxShadow="sm"
+                  borderRadius="lg"
+                  initial={{ background: "rgba(255, 255, 255, 0)" }}
+                  animate={{
+                    background: "rgba(255, 255, 255, 0.4)",
+                    transition: { delay: 1.5, duration: 0.5 },
+                  }}
+                  // animate={{ backgroundColor: "bg-surface" }}
+                  px={{
+                    base: 2,
+                    md: 4,
+                  }}
+                  py={2}
                 >
-                  {date
-                    ? date.toDateString() +
-                      (selectedSlot ? ` ${selectedSlot?.time}` : "")
-                    : "Please select a dates"}
-                </Text>
-              </HStack>
+                  {selectedClass && (
+                    <>
+                      {ClassSpecificForm(selectedClass).map((field, index) => {
+                        return (
+                          <GridItem
+                            colSpan={2}
+                            as={motion.div}
+                            variants={staggeredAnimation(index + 1)}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                            key={field.name}
+                          >
+                            <Stack>
+                              <FormControl id={field.name}>
+                                <FormLabel>{field.label}</FormLabel>
+                                <Input type={field.type} />
+                              </FormControl>
+                            </Stack>
+                          </GridItem>
+                        );
+                      })}
+                      {NonSpecificForm.map((field, index) => {
+                        return (
+                          <GridItem
+                            colSpan={2}
+                            as={motion.div}
+                            variants={staggeredAnimation(index + 1)}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                            key={field.name}
+                          >
+                            <Stack>
+                              <FormControl id={field.name}>
+                                <FormLabel>{field.label}</FormLabel>
+                                <Input type={field.type} />
+                              </FormControl>
+                            </Stack>
+                          </GridItem>
+                        );
+                      })}
+
+                      <GridItem
+                        as={motion.div}
+                        colSpan={2}
+                        variants={staggeredAnimation(5)}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                        key={"phone"}
+                      >
+                        <Stack>
+                          <FormControl id="phoneNumber">
+                            <FormLabel>Phone Number</FormLabel>
+                          </FormControl>
+                        </Stack>
+                      </GridItem>
+                    </>
+                  )}
+                </Grid>
+              </AnimatePresence>
             </VStack>
           </Box>
         )}
@@ -348,3 +310,25 @@ const Booking = () => {
 };
 
 export default Booking;
+
+type NoNavHeaderProps = {
+  header: string;
+};
+const NoNavHeader = ({ header }: NoNavHeaderProps) => {
+  return (
+    <Flex
+      flexDir={{
+        base: "column",
+        md: "row-reverse",
+      }}
+      textAlign="center"
+      justifyContent="space-evenly"
+      alignItems={"center"}
+    >
+      <Logo stayBig />
+      <Heading mb={4} textAlign={"center"}>
+        {header}
+      </Heading>
+    </Flex>
+  );
+};
