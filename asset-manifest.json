@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/fdva/static/css/main.2cfb59b8.css",
+    "main.js": "/fdva/static/js/main.c5537208.js",
+    "static/js/787.21bd414b.chunk.js": "/fdva/static/js/787.21bd414b.chunk.js",
+    "static/media/partner-dance.jpg": "/fdva/static/media/partner-dance.d74db091b61c556aedc5.jpg",
+    "static/media/wedding.jpg": "/fdva/static/media/wedding.d287acbdd51c45d93ffe.jpg",
+    "static/media/rose.jpg": "/fdva/static/media/rose.949e444a9c6a41a45386.jpg",
+    "static/media/choreography.jpg": "/fdva/static/media/choreography.d2b977ada44b098feeaa.jpg",
+    "static/media/bokeh.jpg": "/fdva/static/media/bokeh.510d6a19c3b063ff7cd0.jpg",
+    "static/media/nickheadshot.png": "/fdva/static/media/nickheadshot.3bbc572e9d71eb657d83.png",
+    "static/media/lauren.jpeg": "/fdva/static/media/lauren.eb2a576f81030ab8eb91.jpeg",
+    "index.html": "/fdva/index.html",
+    "main.2cfb59b8.css.map": "/fdva/static/css/main.2cfb59b8.css.map",
+    "main.c5537208.js.map": "/fdva/static/js/main.c5537208.js.map",
+    "787.21bd414b.chunk.js.map": "/fdva/static/js/787.21bd414b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2cfb59b8.css",
+    "static/js/main.c5537208.js"
+  ]
+}
