@@ -2,7 +2,7 @@ import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { theme as proTheme } from "@chakra-ui/pro-theme";
 import { extendTheme } from "@chakra-ui/react";
 import Main from "./components/Main";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 export const theme = extendTheme(
   {

@@ -44,7 +44,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://IdleScV.github.io/fdva",
+  "homepage": "https://IdleScV.github.io/fdva/",
   "eslintConfig": {
     "extends": "react-app"
   },
