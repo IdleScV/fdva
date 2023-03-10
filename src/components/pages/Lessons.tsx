@@ -23,7 +23,6 @@ const Lessons = () => {
           md: "2rem",
         }}
         height="100%"
-        // border="solid red 2px"
         backgroundColor={"rgba(0, 0, 0, 0.2)"}
       >
         <Heading>Lesson Descriptions</Heading>

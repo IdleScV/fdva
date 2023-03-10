@@ -34,7 +34,7 @@ export const App = () => (
     <ColorModeScript />
 
     <ChakraProvider theme={theme}>
-      <ColorModeSwitcher />
+      {/* <ColorModeSwitcher /> */}
       <Main />
     </ChakraProvider>
   </Router>

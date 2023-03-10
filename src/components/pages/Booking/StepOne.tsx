@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Calendar } from "@natscale/react-calendar";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCallback } from "react";
 import NextButton from "../../NextButton";
 
 export type TimeSlot = {
@@ -41,7 +42,6 @@ interface StepOneProps {
   date: Date | undefined;
   handleForwardStep: () => void;
   handleSlotSelect: (slot: TimeSlot) => void;
-  isDisabled: (date: Date) => boolean;
   isLoading: boolean;
   onChange: (val: any) => void;
   selectedDateSlots: TimeSlot[] | undefined;
@@ -52,12 +52,18 @@ const StepOne = ({
   date,
   handleForwardStep,
   handleSlotSelect,
-  isDisabled,
   isLoading,
   onChange,
   selectedDateSlots,
   selectedSlot,
 }: StepOneProps) => {
+  const isDisabled = useCallback((date: Date) => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() - 1);
+    return date < tomorrow;
+  }, []);
+
   return (
     <Box
       as={motion.div}

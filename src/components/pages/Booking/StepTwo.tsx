@@ -26,7 +26,7 @@ export const classOptions: ClassOptionType[] = [
   {
     label: "Partner Dance 101",
     description:
-      " Take a break from the wedding planning chaos and join us for a stress-free partner dance class. From salsa to swing, you'll learn new moves and connect with your partner in a fun and relaxing environment, leaving you feeling rejuvenated and ready to tackle anything.",
+      "Take a break from the wedding planning chaos and join us for a stress-free partner dance class. From salsa to swing, you'll learn new moves and connect with your partner in a fun and relaxing environment, leaving you feeling rejuvenated and ready to tackle anything.",
     value: ClassOptions.Partner,
   },
 ];
