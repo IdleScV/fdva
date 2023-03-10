@@ -1,14 +1,29 @@
-import { Heading, Box, Flex } from "@chakra-ui/react";
+import {
+  Heading,
+  Box,
+  Flex,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+} from "@chakra-ui/react";
 import "@natscale/react-calendar/dist/main.css";
 import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Logo } from "../Logo";
-import StepOne, { TimeSlot, tempTimeSlots } from "./Booking/StepOne";
+import StepOne, { TimeSlot, availableTimeSlots } from "./Booking/StepOne";
 import { ClassOptionType, StepTwo } from "./Booking/StepTwo";
 import "react-phone-input-2/lib/style.css";
 import { useForm } from "react-hook-form";
 import BImage from "../../images/rose.jpg";
 import StepThree from "./Booking/StepThree";
+import { supabase } from "../../supabaseClient";
+import { AdminIntroEmail, welcomeEmail } from "../emails";
+import BookingConfirmation from "./Booking/BookingConfirmation";
 
 const Booking = () => {
   const { register, handleSubmit } = useForm<any>();
@@ -22,29 +37,65 @@ const Booking = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>();
   const [currentStep, setCurrentStep] = useState(0);
 
-  const onSubmit = handleSubmit((data: any) => {
+  const onSubmit = handleSubmit(async (formData: any) => {
     console.log({
       date: date?.toDateString(),
       selectedSlot,
       selectedClass: selectedClass?.value,
-      data,
+      formData,
       phoneNumber,
     });
 
-    // TODO: Send data to backend
     // Process  after Data is received on the BE
     // 1. Send email to user with booking details & payment link
     // 2. Send email to admin with booking details
-    // 3. Send SMS to user with booking details
-    // 4. Send SMS to admin with booking details
-    // FE should then redirect to a success page
-    // let them know that they will receive an email with payment link
+    // 3. Redirect user to confirmation page which asks them to check their email
+
+    const ToClientIntroEmail = {
+      sender: "booking@fdva.com",
+      recipient: formData.email,
+      subject: `Confirm your ${selectedClass?.label} booking! 💃 `,
+      html_body: welcomeEmail(
+        formData.name,
+        // TODO: FIX THIS PRICE TO USE THE CORRECT DATA
+        "$150",
+        "https://www.google.com"
+      ),
+    };
+
+    const { error } = await supabase.rpc("send_email", {
+      message: ToClientIntroEmail,
+    });
+
+    if (error) {
+      alert("Email server error. Please try again later or contact us.");
+    } else {
+      const ToAdminIntroEmail = {
+        sender: "admin@fdva.com",
+        recipient: "weschen1996@gmail.com",
+        subject: `New ${selectedClass?.label} booking! 💃 ${formData.name} `,
+        html_body: AdminIntroEmail(formData.name, {
+          date: date?.toDateString() || "",
+          ...selectedSlot,
+          selectedClass: selectedClass?.value || "",
+          ...formData,
+          phoneNumber: phoneNumber || "",
+        }),
+      };
+      const { error } = await supabase.rpc("send_email", {
+        message: ToAdminIntroEmail,
+      });
+      if (error) {
+        alert("Email server error. Please try again later or contact us.");
+      } else {
+        setCurrentStep(10);
+      }
+    }
   });
 
   const onChange = useCallback(
     (val: any) => {
       setDate(val);
-      setSelectedDateSlots(undefined);
     },
     [setDate]
   );
@@ -52,10 +103,74 @@ const Booking = () => {
   useEffect(() => {
     setIsLoading(true);
     setSelectedSlot(undefined);
-    setTimeout(() => {
-      setSelectedDateSlots(tempTimeSlots);
+
+    if (!date) return;
+
+    const startOfDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    ).toISOString();
+    const endOfDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1
+    ).toISOString();
+
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${process.env.REACT_APP_CALENDAR_ID}/events?`;
+
+    const searchParams = new URLSearchParams({
+      key: process.env.REACT_APP_CALENDAR_API_KEY || "",
+      showDeleted: "false",
+      timeMin: startOfDay,
+      timeMax: endOfDay,
+    });
+
+    const generateTimeSlots = async () =>
+      await fetch(url + searchParams, {
+        method: "GET",
+      }).then((res) => res.json());
+
+    generateTimeSlots().then((data) => {
+      console.log(data);
+      const allTimeSlots = data.items
+        .filter((timeSlot: any) => timeSlot.status !== "cancelled")
+        .map((timeSlot: any, index: number) => {
+          // console.log(timeSlot);
+          return {
+            time: new Date(timeSlot.start.dateTime).toLocaleTimeString(
+              "en-US",
+              {
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            ),
+            id: timeSlot.id,
+          };
+        });
+
+      const canceledTimeSlots = data.items.filter(
+        (timeSlot: any) => timeSlot.status === "cancelled"
+      );
+
+      // console.log(canceledTimeSlots);
+      // canceledTimeSlots have an id whose first 10 digits  matches the id of the time slot in allTimeSlots
+      // we need to remove the canceled time slots from allTimeSlots
+
+      const updatedTimeSlots = allTimeSlots.filter((timeSlot: any) => {
+        const canceledTimeSlot = canceledTimeSlots.find(
+          (canceledTimeSlot: any) => {
+            return (
+              canceledTimeSlot.id.slice(0, 10) === timeSlot.id.slice(0, 10)
+            );
+          }
+        );
+        return !canceledTimeSlot;
+      });
+
+      setSelectedDateSlots([...updatedTimeSlots]);
       setIsLoading(false);
-    }, 1000);
+    });
   }, [date]);
 
   const handleSlotSelect = (slot: TimeSlot) => {
@@ -77,60 +192,59 @@ const Booking = () => {
   };
 
   return (
-    <AnimateSharedLayout>
-      <Box
-        mt="-64px"
-        minHeight="100vh"
-        height="100%"
-        p={{
-          base: "1rem",
-          md: "2rem",
-        }}
-        display={"flex"}
-        flexDirection={"column"}
-        backgroundImage={BImage}
-        backgroundSize="cover"
-      >
-        <NoNavHeader header="Booking" />
+    <Box
+      mt="-64px"
+      minHeight="100vh"
+      height="100%"
+      p={{
+        base: "1rem",
+        md: "2rem",
+      }}
+      display={"flex"}
+      flexDirection={"column"}
+      backgroundImage={BImage}
+      backgroundSize="cover"
+    >
+      <NoNavHeader header={currentStep > 5 ? "Confirmation" : "Booking"} />
 
-        <AnimatePresence initial={false} exitBeforeEnter>
-          {currentStep === 0 && (
-            <StepOne
-              date={date}
-              handleForwardStep={handleForwardStep}
-              handleSlotSelect={handleSlotSelect}
-              isLoading={isLoading}
-              key="step-0"
-              onChange={onChange}
-              selectedDateSlots={selectedDateSlots}
-              selectedSlot={selectedSlot}
-            />
-          )}
-          {currentStep === 1 && (
-            <StepTwo
-              date={date}
-              handleBackStep={handleBackStep}
-              handleClassTypeSelect={handleClassTypeSelect}
-              handleForwardStep={handleForwardStep}
-              key="step-1"
-              selectedClass={selectedClass}
-              selectedSlot={selectedSlot}
-            />
-          )}
-          {currentStep === 2 && (
-            <StepThree
-              handleBackStep={handleBackStep}
-              key="step-2"
-              selectedClass={selectedClass}
-              register={register}
-              onSubmit={onSubmit}
-              phoneNumber={phoneNumber}
-              setPhoneNumber={setPhoneNumber}
-            />
-          )}
-        </AnimatePresence>
-      </Box>
-    </AnimateSharedLayout>
+      <AnimatePresence initial={false} exitBeforeEnter>
+        {currentStep === 0 && (
+          <StepOne
+            date={date}
+            handleForwardStep={handleForwardStep}
+            handleSlotSelect={handleSlotSelect}
+            isLoading={isLoading}
+            key="step-0"
+            onChange={onChange}
+            selectedDateSlots={selectedDateSlots}
+            selectedSlot={selectedSlot}
+          />
+        )}
+        {currentStep === 1 && (
+          <StepTwo
+            date={date}
+            handleBackStep={handleBackStep}
+            handleClassTypeSelect={handleClassTypeSelect}
+            handleForwardStep={handleForwardStep}
+            key="step-1"
+            selectedClass={selectedClass}
+            selectedSlot={selectedSlot}
+          />
+        )}
+        {currentStep === 2 && (
+          <StepThree
+            handleBackStep={handleBackStep}
+            key="step-2"
+            selectedClass={selectedClass}
+            register={register}
+            onSubmit={onSubmit}
+            phoneNumber={phoneNumber}
+            setPhoneNumber={setPhoneNumber}
+          />
+        )}
+        {currentStep === 10 && <BookingConfirmation key="step-10" />}
+      </AnimatePresence>
+    </Box>
   );
 };
 

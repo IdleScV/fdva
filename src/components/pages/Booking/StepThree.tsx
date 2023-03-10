@@ -33,12 +33,39 @@ interface StepThreeProps {
   phoneNumber: string | undefined;
   setPhoneNumber: (val: string) => void;
 }
+
+export const staggeredAnimation = (count: number, rate: number = 0.03) => {
+  return {
+    initial: {
+      opacity: 0,
+      y: -10,
+      x: -10,
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: {
+        delay: count ** 2 * rate,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        delay: count ** 1.5 * (rate / 3),
+        duration: 0.02,
+      },
+    },
+  };
+};
+
 const StepThree = ({
   handleBackStep,
   selectedClass,
   register,
   onSubmit,
   phoneNumber,
+
   setPhoneNumber,
 }: StepThreeProps) => {
   const ClassSpecificForm = (selectedClass: ClassOptionType) => {
@@ -114,30 +141,7 @@ const StepThree = ({
   const isValidNumber = (number: string) => {
     return number.length === 11;
   };
-  const staggeredAnimation = (count: number) => {
-    return {
-      initial: {
-        opacity: 0,
-        x: 50,
-      },
-      animate: {
-        opacity: 1,
-        x: 0,
-        transition: {
-          delay: (1 - 1 / (count * 1.1)) * 1.5,
-          ease: "easeOut",
-        },
-      },
-      exit: {
-        opacity: 0,
-        x: -50,
-        transition: {
-          delay: 0.2 * count,
-          duration: 0.5,
-        },
-      },
-    };
-  };
+
   return (
     <Box
       as={motion.div}
@@ -206,7 +210,7 @@ const StepThree = ({
                       <GridItem
                         colSpan={2}
                         as={motion.div}
-                        variants={staggeredAnimation(index + 1)}
+                        variants={staggeredAnimation(index)}
                         initial="initial"
                         animate="animate"
                         exit="exit"
