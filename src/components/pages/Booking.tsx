@@ -38,6 +38,7 @@ const Booking = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const onSubmit = handleSubmit(async (formData: any) => {
+    setIsLoading(true);
     console.log({
       date: date?.toDateString(),
       selectedSlot,
@@ -89,6 +90,7 @@ const Booking = () => {
         alert("Email server error. Please try again later or contact us.");
       } else {
         setCurrentStep(10);
+        setIsLoading(false);
       }
     }
   });
@@ -240,6 +242,7 @@ const Booking = () => {
             onSubmit={onSubmit}
             phoneNumber={phoneNumber}
             setPhoneNumber={setPhoneNumber}
+            isLoading={isLoading}
           />
         )}
         {currentStep === 10 && <BookingConfirmation key="step-10" />}

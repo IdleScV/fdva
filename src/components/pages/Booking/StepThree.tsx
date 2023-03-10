@@ -32,6 +32,7 @@ interface StepThreeProps {
   onSubmit: any;
   phoneNumber: string | undefined;
   setPhoneNumber: (val: string) => void;
+  isLoading: boolean;
 }
 
 export const staggeredAnimation = (count: number, rate: number = 0.03) => {
@@ -65,7 +66,7 @@ const StepThree = ({
   register,
   onSubmit,
   phoneNumber,
-
+  isLoading
   setPhoneNumber,
 }: StepThreeProps) => {
   const ClassSpecificForm = (selectedClass: ClassOptionType) => {
@@ -325,6 +326,7 @@ const StepThree = ({
                           my={4}
                           type="submit"
                           variant="outline"
+                          isLoading={isLoading}
                         >
                           Submit
                         </Button>
