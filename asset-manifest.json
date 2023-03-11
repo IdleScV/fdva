@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/fdva/static/css/main.2cfb59b8.css",
-    "main.js": "/fdva/static/js/main.bf0bea79.js",
+    "main.js": "/fdva/static/js/main.ab4e4302.js",
     "static/js/787.21bd414b.chunk.js": "/fdva/static/js/787.21bd414b.chunk.js",
     "static/media/partner-dance.jpg": "/fdva/static/media/partner-dance.d74db091b61c556aedc5.jpg",
     "static/media/wedding.jpg": "/fdva/static/media/wedding.d287acbdd51c45d93ffe.jpg",
@@ -12,11 +12,11 @@
     "static/media/lauren.jpeg": "/fdva/static/media/lauren.eb2a576f81030ab8eb91.jpeg",
     "index.html": "/fdva/index.html",
     "main.2cfb59b8.css.map": "/fdva/static/css/main.2cfb59b8.css.map",
-    "main.bf0bea79.js.map": "/fdva/static/js/main.bf0bea79.js.map",
+    "main.ab4e4302.js.map": "/fdva/static/js/main.ab4e4302.js.map",
     "787.21bd414b.chunk.js.map": "/fdva/static/js/787.21bd414b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2cfb59b8.css",
-    "static/js/main.bf0bea79.js"
+    "static/js/main.ab4e4302.js"
   ]
 }
