@@ -54,7 +54,7 @@ const Booking = () => {
             if (classType === ClassOptions.Choreographed) {
                 return "$450";
             } else if (classType === ClassOptions.Partner) {
-                return "$350";
+                return "$270";
             } else {
                 return "";
             }
