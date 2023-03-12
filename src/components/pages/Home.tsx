@@ -44,7 +44,7 @@ export const Home = () => {
                     base: "1rem",
                     md: "2rem",
                 }}
-                height="calc(100vh - 64px)"
+                height="calc(100dvh - 64px)"
             >
                 <VStack
                     justify={{ base: "center", md: "end" }}

@@ -205,7 +205,7 @@ const Booking = () => {
     return (
         <Box
             mt="-64px"
-            minHeight="100vh"
+            minHeight="100dvh"
             height="100%"
             p={{
                 base: "1rem",
